@@ -8,12 +8,12 @@
 ---
 global:
   gsmimage:
-   repository:
-   tag:
+   repository: lhr.ocir.io/oscemea001/sharding/oracle/databse-gsm
+   tag: 19.3.0-2
    pullPolicy: IfNotPresent
   dbimage:
-   repository:
-   tag:
+   repository: lhr.ocir.io/oscemea001/sharding/oracle/database
+   tag: 19.3.0-ee
    pullPolicy: IfNotPresent
   secret:
    oraclePwd: db-user-pass
@@ -51,11 +51,11 @@ gsm:
   gsmHostName: gsmhost
   nodeselector: ad3
   oci:
-   region: phx
-   zone: PHX-AD-1
+   region: lhr
+   zone: UK-LONDON-1-AD-1
   pvc:
-   ociAD: "PHX-AD-1"
-   storageSize: 50Gi
+   ociAD: "UK-LONDON-1-AD-1"
+   storageSize: 1000Gi
    accessModes: ReadWriteOnce
    storageClassName: oci
    DBMountLoc: /opt/oracle/gsmdata
@@ -84,11 +84,11 @@ oshard1:
   shardHostName: oshard1
   storageType: "bv"
   oci:
-   region: phx
-   zone: PHX-AD-1
+   region: lhr
+   zone: UK-LONDON-1-AD-1
   pvc:
-   ociAD: "PHX-AD-1"
-   storageSize: 50Gi
+   ociAD: "UK-LONDON-1-AD-1"
+   storageSize: 1000Gi
    accessModes: ReadWriteOnce
    storageClassName: oci
    DBMountLoc: /opt/oracle/oradata
@@ -98,10 +98,14 @@ oshard1:
    ORACLE_PDB: ORCL1PDB
    OP_TYPE: primaryshard
    DB_MEMORY: 12G
-   OLD_ORACLE_SID: goldcdb
+   OLD_ORACLE_SID: ORCLCDB
+   OLD_ORACLE_PDB: ORCLPDB1
   clone:
-   db:
-   ocid:  
+   db: true
+   #Volume OCID
+   #ocid: ocid1.volume.oc1.uk-london-1.abwgiljrfi2anitazqom53dmwpqlb5mdu7ghojmynjndmmvj5rdvto2n6n2q
+   #Backup OCID
+   ocid: ocid1.volumebackup.oc1.uk-london-1.abwgiljrvpt4zqq7rvqtm5iu3jyjcqhqjizqo3zg5r2qwoiu37ls2y43g7uq 
   nfs:
    storageClassName: oci-fss
    mountOptions: nosuid
@@ -115,11 +119,11 @@ oshard2:
   shardHostName: oshard2
   storageType: "bv"
   oci:
-   region: phx
-   zone: PHX-AD-1
+   region: lhr
+   zone: UK-LONDON-1-AD-1
   pvc:
-   ociAD: "PHX-AD-1"
-   storageSize: 50Gi
+   ociAD: "UK-LONDON-1-AD-1"
+   storageSize: 1000Gi
    accessModes: ReadWriteOnce
    storageClassName: oci
    DBMountLoc: /opt/oracle/oradata
@@ -129,10 +133,14 @@ oshard2:
    ORACLE_PDB: ORCL2PDB
    OP_TYPE: primaryshard
    DB_MEMORY: 12G
-   OLD_ORACLE_SID: goldcdb
+   OLD_ORACLE_SID: ORCLCDB
+   OLD_ORACLE_PDB: ORCLPDB1
   clone:
-   db:
-   ocid:  
+   db: true
+   #Volume OCID
+   #ocid: ocid1.volume.oc1.uk-london-1.abwgiljrfi2anitazqom53dmwpqlb5mdu7ghojmynjndmmvj5rdvto2n6n2q
+   #Backup OCID
+   ocid: ocid1.volumebackup.oc1.uk-london-1.abwgiljrvpt4zqq7rvqtm5iu3jyjcqhqjizqo3zg5r2qwoiu37ls2y43g7uq  
   nfs:
    storageClassName: oci-fss
    mountOptions: nosuid
@@ -146,11 +154,11 @@ oshard3:
   shardHostName: oshard3
   storageType: "bv"
   oci:
-   region: phx
-   zone: PHX-AD-1
+   region: lhr
+   zone: UK-LONDON-1-AD-1
   pvc:
-   ociAD: "PHX-AD-1"
-   storageSize: 50Gi
+   ociAD: "UK-LONDON-1-AD-1"
+   storageSize: 1000Gi
    accessModes: ReadWriteOnce
    storageClassName: oci
    DBMountLoc: /opt/oracle/oradata
@@ -160,10 +168,14 @@ oshard3:
    ORACLE_PDB: ORCL3PDB
    OP_TYPE: primaryshard
    DB_MEMORY: 12G
-   OLD_ORACLE_SID: goldcdb
+   OLD_ORACLE_SID: ORCLCDB
+   OLD_ORACLE_PDB: ORCLPDB1
   clone:
-   db:
-   ocid:  
+   db: true
+   #Volume OCID
+   #ocid: ocid1.volume.oc1.uk-london-1.abwgiljrfi2anitazqom53dmwpqlb5mdu7ghojmynjndmmvj5rdvto2n6n2q
+   #Backup OCID
+   ocid: ocid1.volumebackup.oc1.uk-london-1.abwgiljrvpt4zqq7rvqtm5iu3jyjcqhqjizqo3zg5r2qwoiu37ls2y43g7uq 
   nfs:
    storageClassName: oci-fss
    mountOptions: nosuid
@@ -177,11 +189,11 @@ oshard-catalog:
   shardHostName: oshard-catalog
   storageType: "bv"
   oci:
-   region: phx
-   zone: PHX-AD-1
+   region: lhr
+   zone: UK-LONDON-1-AD-1
   pvc:
-   ociAD: "PHX-AD-1"
-   storageSize: 50Gi
+   ociAD: "UK-LONDON-1-AD-1"
+   storageSize: 1000Gi
    accessModes: ReadWriteOnce
    storageClassName: oci
    DBMountLoc: /opt/oracle/oradata
@@ -191,10 +203,14 @@ oshard-catalog:
    ORACLE_PDB: CAT1PDB
    OP_TYPE: catalog
    DB_MEMORY: 12G
-   OLD_ORACLE_SID: goldcdb
+   OLD_ORACLE_SID: ORCLCDB
+   OLD_ORACLE_PDB: ORCLPDB1
   clone:
-   db:
-   ocid:  
+   db: true
+   #Volume OCID
+   #ocid: ocid1.volume.oc1.uk-london-1.abwgiljrfi2anitazqom53dmwpqlb5mdu7ghojmynjndmmvj5rdvto2n6n2q
+   #Backup OCID
+   ocid: ocid1.volumebackup.oc1.uk-london-1.abwgiljrvpt4zqq7rvqtm5iu3jyjcqhqjizqo3zg5r2qwoiu37ls2y43g7uq 
   nfs:
    storageClassName: oci-fss
    mountOptions: nosuid
