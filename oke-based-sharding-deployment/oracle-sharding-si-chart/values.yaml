@@ -43,7 +43,7 @@ global:
    containerAgentPortName:  db1-agentport
    containerAgentPort: 8080
   service:
-   type: LoadBalancer
+   type: NodePort
    port: 1521
 
 gsm:
@@ -61,7 +61,7 @@ gsm:
    DBMountLoc: /opt/oracle/gsmdata
    stagingLoc: /opt/oracle/gsm/scripts/setup
   service:
-   type: LoadBalancer
+   type: NodePort
    port: 1521
   env:
    SHARD_DIRECTOR_PARAMS: "director_name=sharddirector1;director_region=region1;director_port=1521"
