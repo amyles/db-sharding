@@ -10,10 +10,10 @@ metadata:
 {{ include "oracle-sharding-si-chart.labels" . | indent 4 }}
 spec:
   storageClassName: "{{ .Values.gsm.pvc.storageClassName }}"
-  selector:
-    matchLabels:
-      failure-domain.beta.kubernetes.io/region: {{ .Values.gsm.oci.region }}
-      failure-domain.beta.kubernetes.io/zone: {{ .Values.gsm.oci.zone }}
+#  selector:
+#    matchLabels:
+#      failure-domain.beta.kubernetes.io/region: {{ .Values.gsm.oci.region }}
+#      failure-domain.beta.kubernetes.io/zone: {{ .Values.gsm.oci.zone }}
   accessModes:
     - {{ .Values.gsm.pvc.accessModes }}
   resources:

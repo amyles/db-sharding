@@ -18,7 +18,10 @@
 #
 # Pull base image
 # ---------------
-FROM oraclelinux:7-slim as base
+#FROM nexus.idst.ibaintern.de:5050/ipdt/hub.docker.com/oraclelinux:7-slim as base
+#FROM nexus.idst.ibaintern.de:5050/ibi/base:latest as base
+#FROM nexus.idst.ibaintern.de:5050/ibi/openjdk-jre:11
+from nexus.idst.ibaintern.de:5050/ipdt/hub.docker.com/ba-oraclelinux:7-slim as base 
 
 # Maintainer
 # ----------
@@ -52,6 +55,7 @@ ENV  INSTALL_SCRIPTS=$INSTALL_DIR/install \
 
 # Copy files needed during both installation and runtime
 # ------------
+ADD redhat_nprod.repo /etc/yum.repos.d/redhat_nprod.repo
 COPY $INSTALL_FILE_1 $SETUP_LINUX_FILE $CHECK_SPACE_FILE $INSTALL_RSP $GSM_ENV_SETUP_FILE $INSTALL_GSM_BINARIES_FILE $GSM_SETUP_FILE $INSTALL_DIR/install/
 COPY $RUN_FILE $GSM_SETUP_FILE $USER_SCRIPTS_FILE $INSTALL_DIR/startup/ 
 COPY $GSM_SCRIPTS $INSTALL_DIR/startup/scripts

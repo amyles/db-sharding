@@ -77,7 +77,7 @@ while getopts "hiv:o:" optname; do
 done
 
 # Oracle Database Image Name
-IMAGE_NAME="oracle/databse-gsm:$VERSION"
+IMAGE_NAME="registry-push.idst.ibaintern.de:5050/seaq1/sharding/oracle/database-gsm:$VERSION"
 
 # Go into version folder
 cd $VERSION
@@ -89,7 +89,7 @@ else
 fi
 echo "=========================="
 echo "DOCKER info:"
-docker info
+docker.exe info
 echo "=========================="
 
 # Proxy settings
@@ -121,7 +121,7 @@ echo "Building image '$IMAGE_NAME' ..."
 
 # BUILD THE IMAGE (replace all environment variables)
 BUILD_START=$(date '+%s')
-docker build --force-rm=true --no-cache=true $DOCKEROPS $PROXY_SETTINGS -t $IMAGE_NAME -f Dockerfile . || {
+docker.exe build --force-rm=true --no-cache=true $DOCKEROPS $PROXY_SETTINGS -t $IMAGE_NAME -f Dockerfile . || {
   echo "There was an error building the image."
   exit 1
 }

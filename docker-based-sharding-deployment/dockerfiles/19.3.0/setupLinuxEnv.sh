@@ -7,5 +7,6 @@
 
 # ------------------------------------------------------------
 chmod ug+x $SCRIPT_DIR/*.sh && \
+yum-config-manager --save --setopt=ol7_latest.skip_if_unavailable=true && \
 yum -y install oracle-database-preinstall-19c  net-tools which zip unzip tar openssl openssh-server openssh-client vim-minimal which vim-minimal passwd sudo  && \
 yum clean all

@@ -8,19 +8,19 @@
 ---
 global:
   gsmimage:
-   repository: lhr.ocir.io/oscemea001/sharding/oracle/databse-gsm
-   tag: 19.3.0-2
+   repository: registry-thf.idst.ibaintern.de:5050/seaq1/sharding/oracle/database-gsm
+   tag: 19.3.0
    pullPolicy: IfNotPresent
   dbimage:
-   repository: lhr.ocir.io/oscemea001/sharding/oracle/database
+   repository: registry-thf.idst.ibaintern.de:5050/seaq1/sharding/oracle/database
    tag: 19.3.0-ee
    pullPolicy: IfNotPresent
   secret:
    oraclePwd: db-user-pass
    oraclePwdLoc: /mnt/secrets
   strategy: Recreate
-  getScrCmd: "curl https://codeload.github.com/oracle/db-sharding/tar.gz/master |   tar -xz --strip=4 db-sharding-master/docker-based-sharding-deployment/dockerfiles/19.3.0/scripts" 
-  registrySecret: oshardsecret
+  getScrCmd: "curl -k -x proxy:3128 https://codeload.github.com/oracle/db-sharding/tar.gz/master |   tar -xz --strip=4 db-sharding-master/docker-based-sharding-deployment/dockerfiles/19.3.0/scripts" 
+  registrySecret: registry
   ocloneScrCMD: /opt/oracle/scripts/setup/runOraShardSetup.sh
   gsmports:
    containerGSMProtocol: TCP
@@ -49,15 +49,15 @@ global:
 gsm:
   replicaCount: 1
   gsmHostName: gsmhost
-  nodeselector: ad3
+#  nodeselector: ad3
   oci:
    region: lhr
    zone: UK-LONDON-1-AD-1
   pvc:
    ociAD: "UK-LONDON-1-AD-1"
-   storageSize: 1000Gi
+   storageSize: 10Gi
    accessModes: ReadWriteOnce
-   storageClassName: oci
+   storageClassName: pure
    DBMountLoc: /opt/oracle/gsmdata
    stagingLoc: /opt/oracle/gsm/scripts/setup
   service:
@@ -80,7 +80,7 @@ gsm:
 oshard1:
   replicaCount: 1
   app: oshard-db1
-  nodeselector: ad3
+#  nodeselector: ad3
   shardHostName: oshard1
   storageType: "bv"
   oci:
@@ -88,20 +88,20 @@ oshard1:
    zone: UK-LONDON-1-AD-1
   pvc:
    ociAD: "UK-LONDON-1-AD-1"
-   storageSize: 1000Gi
+   storageSize: 10Gi
    accessModes: ReadWriteOnce
-   storageClassName: oci
+   storageClassName: pure
    DBMountLoc: /opt/oracle/oradata
    stagingLoc: /opt/oracle/scripts/setup
   env:
    ORACLE_SID: ORCL1CDB
    ORACLE_PDB: ORCL1PDB
    OP_TYPE: primaryshard
-   DB_MEMORY: 12G
+   DB_MEMORY: 4G
    OLD_ORACLE_SID: ORCLCDB
    OLD_ORACLE_PDB: ORCLPDB1
   clone:
-   db: true
+   db: false
    #Volume OCID
    #ocid: ocid1.volume.oc1.uk-london-1.abwgiljrfi2anitazqom53dmwpqlb5mdu7ghojmynjndmmvj5rdvto2n6n2q
    #Backup OCID
@@ -115,7 +115,7 @@ oshard1:
 oshard2:
   replicaCount: 1
   app: oshard-db2
-  nodeselector: ad3
+#  nodeselector: ad3
   shardHostName: oshard2
   storageType: "bv"
   oci:
@@ -123,20 +123,20 @@ oshard2:
    zone: UK-LONDON-1-AD-1
   pvc:
    ociAD: "UK-LONDON-1-AD-1"
-   storageSize: 1000Gi
+   storageSize: 10Gi
    accessModes: ReadWriteOnce
-   storageClassName: oci
+   storageClassName: pure
    DBMountLoc: /opt/oracle/oradata
    stagingLoc: /opt/oracle/scripts/setup
   env:
    ORACLE_SID: ORCL2CDB
    ORACLE_PDB: ORCL2PDB
    OP_TYPE: primaryshard
-   DB_MEMORY: 12G
+   DB_MEMORY: 4G
    OLD_ORACLE_SID: ORCLCDB
    OLD_ORACLE_PDB: ORCLPDB1
   clone:
-   db: true
+   db: false
    #Volume OCID
    #ocid: ocid1.volume.oc1.uk-london-1.abwgiljrfi2anitazqom53dmwpqlb5mdu7ghojmynjndmmvj5rdvto2n6n2q
    #Backup OCID
@@ -150,7 +150,7 @@ oshard2:
 oshard3:
   replicaCount: 1
   app: oshard-db3
-  nodeselector: ad3
+#  nodeselector: ad3
   shardHostName: oshard3
   storageType: "bv"
   oci:
@@ -158,20 +158,20 @@ oshard3:
    zone: UK-LONDON-1-AD-1
   pvc:
    ociAD: "UK-LONDON-1-AD-1"
-   storageSize: 1000Gi
+   storageSize: 10Gi
    accessModes: ReadWriteOnce
-   storageClassName: oci
+   storageClassName: pure
    DBMountLoc: /opt/oracle/oradata
    stagingLoc: /opt/oracle/scripts/setup
   env:
    ORACLE_SID: ORCL3CDB
    ORACLE_PDB: ORCL3PDB
    OP_TYPE: primaryshard
-   DB_MEMORY: 12G
+   DB_MEMORY: 4G
    OLD_ORACLE_SID: ORCLCDB
    OLD_ORACLE_PDB: ORCLPDB1
   clone:
-   db: true
+   db: false
    #Volume OCID
    #ocid: ocid1.volume.oc1.uk-london-1.abwgiljrfi2anitazqom53dmwpqlb5mdu7ghojmynjndmmvj5rdvto2n6n2q
    #Backup OCID
@@ -185,7 +185,7 @@ oshard3:
 oshard-catalog:
   replicaCount: 1
   app: oshard-cat
-  nodeselector: ad3
+#  nodeselector: ad3
   shardHostName: oshard-catalog
   storageType: "bv"
   oci:
@@ -193,20 +193,20 @@ oshard-catalog:
    zone: UK-LONDON-1-AD-1
   pvc:
    ociAD: "UK-LONDON-1-AD-1"
-   storageSize: 1000Gi
+   storageSize: 10Gi
    accessModes: ReadWriteOnce
-   storageClassName: oci
+   storageClassName: pure
    DBMountLoc: /opt/oracle/oradata
    stagingLoc: /opt/oracle/scripts/setup
   env:
    ORACLE_SID: CATCDB
    ORACLE_PDB: CAT1PDB
    OP_TYPE: catalog
-   DB_MEMORY: 12G
+   DB_MEMORY: 4G
    OLD_ORACLE_SID: ORCLCDB
    OLD_ORACLE_PDB: ORCLPDB1
   clone:
-   db: true
+   db: false
    #Volume OCID
    #ocid: ocid1.volume.oc1.uk-london-1.abwgiljrfi2anitazqom53dmwpqlb5mdu7ghojmynjndmmvj5rdvto2n6n2q
    #Backup OCID

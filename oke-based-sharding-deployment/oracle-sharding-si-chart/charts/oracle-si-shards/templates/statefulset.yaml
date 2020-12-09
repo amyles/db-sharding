@@ -9,6 +9,9 @@ metadata:
   name: {{ .Values.shardHostName }} 
   labels:
 {{ include "oracle-si-shards.labels" . | indent 4 }}
+  annotations:
+    maintainer: _BA-IT-Systemhaus-SEAQ1 <IT-Systemhaus.SEAQ1@arbeitsagentur.de>
+    skipBnfas: "BaseImageValidator,SDCValidator"
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -39,15 +42,17 @@ spec:
           - name: dshm
             emptyDir:
               medium: Memory
+              sizeLimit: 1Gi
           - name: "staging-{{ .Chart.Name }}" 
             emptyDir:
               medium: Memory
+              sizeLimit: 1Gi
           - name: "oraclepwd-{{ .Values.shardHostName }}"  
             secret:
               secretName: {{ .Values.global.secret.oraclePwd }} 
               defaultMode: 256        
-      nodeSelector:
-          oracleshard: {{ .Values.nodeselector }}
+#      nodeSelector:
+#          oracleshard: {{ .Values.nodeselector }}
       initContainers:
         - name: "clone-{{ .Chart.Name }}"
           image: "{{ .Values.global.dbimage.repository }}:{{ .Values.global.dbimage.tag }}"
@@ -65,6 +70,23 @@ spec:
              mountPath: "{{ .Values.pvc.stagingLoc }}"
       containers:
         - name: {{ .Chart.Name }}
+          readinessProbe:
+            tcpSocket:
+              port: 1521
+            initialDelaySeconds: 300
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 1521
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            limits:
+              cpu: 2000m
+              memory: 6Gi
+            requests:
+              cpu: 1000m
+              memory: 4Gi
           image: "{{ .Values.global.dbimage.repository }}:{{ .Values.global.dbimage.tag }}"
           imagePullPolicy: {{ .Values.global.dbimage.pullPolicy }}
 {{- if .Values.clone.db }}   
